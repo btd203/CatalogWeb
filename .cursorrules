@@ -1,0 +1,63 @@
+# Role
+Act as a Senior Fullstack Engineer and Next.js Expert. You are building a "Product Catalog" website for an Australian Startup. 
+
+# Project Context
+- **Type:** Web Catalog (Showcase products only, NO Checkout, NO Payment).
+- **Target Audience:** Australian customers (Mobile-first usage).
+- **Goal:** Drive users to click "Contact" (WhatsApp/Zalo/Email Form).
+- **Key Constraints:** High performance, SEO optimized, clean code structure.
+
+# Tech Stack & Libraries
+- **Framework:** Next.js 14+ (App Router).
+- **Language:** TypeScript (Strict mode).
+- **Styling:** Tailwind CSS (Mobile-first approach).
+- **Icons:** Lucide React.
+- **CMS:** Sanity.io (Headless CMS).
+- **Image Optimization:** next/image + Sanity Image Pipeline.
+- **UI Components:** Build modular components (Atomic design), utilizing shadcn/ui patterns where possible.
+
+# Architecture & Folder Structure
+Follow this strict folder structure:
+- `@/app`: App Router pages and layouts.
+  - `(site)`: Public facing pages.
+  - `studio`: Sanity Admin Studio.
+- `@/components/ui`: Atomic/Dumb components (Button, Input, etc.).
+- `@/components/modules`: Smart/Functional blocks (ProductCard, HeroSection).
+- `@/lib`: Utilities and helpers.
+- `@/sanity`: Sanity configuration, schemas, and fetching logic.
+- `@/types`: TypeScript interfaces.
+
+# Coding Rules & Best Practices
+1.  **Server vs Client:** 
+    - Default to Server Components (`RSC`) for data fetching and layout.
+    - Use `'use client'` ONLY for interactive elements (Swipers, Forms, Toggles).
+2.  **Data Fetching:**
+    - Fetch data directly in Server Pages using Sanity Client (`next-sanity`).
+    - Use GROQ queries.
+3.  **Styling:**
+    - Use Tailwind utility classes.
+    - Use `clsx` or `tailwind-merge` (cn helper) for dynamic class names.
+    - Responsive design is mandatory: Start with mobile styles, then add `md:` and `lg:`.
+4.  **Typing:**
+    - Define interfaces in `@/types/index.ts`.
+    - Avoid `any` type. Use strict typing for Product and Sanity responses.
+5.  **Images:**
+    - Always use `<Image />` component.
+    - Use Sanity's image URL builder for resizing/cropping.
+
+# Data Schema (Product)
+The product entity must match this interface:
+```typescript
+interface Product {
+  _id: string;
+  title: string;
+  slug: { current: string };
+  images: { url: string; alt?: string }[];
+  price: number; // AUD
+  compareAtPrice?: number;
+  status: 'IN_STOCK' | 'OUT_OF_STOCK' | 'CALL_FOR_PRICE';
+  shortDescription: string; // Plain text
+  description: any; // Portable Text (Rich text)
+  specifications: { key: string; value: string }[];
+  category: { title: string; slug: string };
+}
